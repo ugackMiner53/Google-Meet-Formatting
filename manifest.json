@@ -3,7 +3,6 @@
   "version": "0.0.1",
   "icons": {"128": "icon128x128.png"},
   "description": "Google Meet Formatting allows you to use formatting codes in the chat window",
-  "permissions": [ "tabs" ],
   "homepage_url": "https://github.com/",
   "content_scripts": [
 	{
