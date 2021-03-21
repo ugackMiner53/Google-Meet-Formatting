@@ -10,13 +10,10 @@
 		"js": ["content-script.js"]
 	}
   ],
-  "web_accessible_resources": [
-  ],
   "browser_action": {
 	"default_icon": "icon128x128.png",
 	"default_title": "Google Meet Formatting",
 	"default_popup": "help.html"
   },
-  "options_page": "help.html",
   "manifest_version": 2
 }
