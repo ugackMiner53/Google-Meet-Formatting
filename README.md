@@ -2,7 +2,7 @@
 This is an extension which adds some much needed formatting to Google Meet, taking inspiration from [Discord's](https://discord.com) markdown theme.
 
 
-Currently supports: Google Chrome, [Tampermonkey](https://www.tampermonkey.net/)
+Currently supports: Google Chrome, [Tampermonkey](https://greasyfork.org/en/scripts/423718-google-meet-formatting)
 
 Find downloads in the Releases tab!
 
