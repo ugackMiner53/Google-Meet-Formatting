@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Google Meet Formatting
+// @name         Google Meet Formatting Development
 // @namespace    https://github.com/ugackMiner53/Google-Meet-Formatting/
-// @version      0.0.1
+// @version      0.0.2
 // @description  Adds needed formatting codes to google meet
 // @author       ugackMiner
 // @match        https://meet.google.com/*
