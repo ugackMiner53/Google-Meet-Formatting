@@ -1,10 +1,14 @@
-# Google Meet Formatting
-This is an extension which adds some much needed formatting to Google Meet, taking inspiration from [Discord's](https://discord.com) markdown theme.
+
+# Google Meet Formatting Development
+This is the current code which is being tested, so there are no prebuilt releases.
+
+### Changelog:
+Fixed a bug where sending a link with underscores in it would break the link
+Fixed a bug where closing the chat window would break the script
+
+Added private messages
 
 
-Currently supports: [Google Chrome](https://chrome.google.com/webstore/detail/google-meet-formatting/ohkikbaddjhnjcifcolepmbkienojiph), [Tampermonkey](https://greasyfork.org/en/scripts/423718-google-meet-formatting), [Firefox](https://addons.mozilla.org/en-US/firefox/addon/google-meet-formatting/), [Edge](https://microsoftedge.microsoft.com/addons/detail/google-meet-formatting/gcjbjciijjmidoiemonndniecgemflnk)
-
-Find downloads in the Releases tab!
 
 ## Current formatting Codes:
 **Bold** - \*\*Bold\*\*
@@ -33,3 +37,7 @@ Highlighting - #Highlighting#
 /shrug - ¯\\\_(ツ)\_/¯
 
 /help - Shows the formatting codes
+
+@USERNAME - Sends a message in the chat which only people with the same characters in the @ can see.
+
+
