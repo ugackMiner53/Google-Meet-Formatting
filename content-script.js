@@ -7,7 +7,6 @@
 // @match        https://meet.google.com/*
 // @grant        none
 // ==/UserScript==
-
 var chatbox;
 var yourName;
 
@@ -70,6 +69,7 @@ var mutationObserver = new MutationObserver(function(mutations) {
 
 
 var oldMessageId;
+var mutedPeople = [];
 function onMessageEvent(messageElement = null)
 {
     if (document.getElementsByClassName("gYckH").length != 0 || oldMessageId === document.getElementsByClassName("oIy2qc").length - 1)
@@ -83,27 +83,25 @@ function onMessageEvent(messageElement = null)
     oldMessageId = document.getElementsByClassName("oIy2qc").length - 1;
         
     console.log(author + ": " + message + " - " + oldMessageId);
-    
 
-    // Check if message include @
-    if (message.match(/@([^\s]+)/))
+    // If the author is muted, hide their message
+    mutedPeople.forEach(mutedPerson => {
+        if (author.includes(mutedPerson))
+        {
+            messageElement.innerHTML = "";
+            return;
+        }
+    });
+
+
+    // Replace $$link$$ with an image
+    if (/\$\$(.+?)\$\$/g.test(messageElement.innerHTML))
     {
-        var pmName = message.match(/@([^\s]+)/)[1];
-        pmName = pmName.replace(/\@(.+?)/g, "");
-        // Check if your name includes what they selected
-        if (yourName.includes(pmName))
-        {
-            messageElement.innerHTML = "<mark>" + message + "</mark>";
-        }
-        else if (author !== "You")
-        {
-            console.log(yourName + " - " + pmName);
-            messageElement.innerHTML = "<sub><i>Private message sent</i></sub>";
-        }
+        messageElement.innerHTML = messageElement.innerHTML.replace(/\$\$(.*?)\$\$/g, "$1");
+        messageElement.innerHTML = messageElement.innerHTML.replace(/\<a(.*?)\>(.*?)\<\/a\>/g, "<img style=\"max-width: 200px; max-height: 200px\" src=\"$2\"></img>");
     }
 
-
-
+    // If the message contains a link, skip formatting the message in fear of formatting the link on accident
     if(new RegExp(/https?:\/\/(www.)?./).test(message)) {
         return;
     }
@@ -131,8 +129,7 @@ function onMessageEvent(messageElement = null)
     messageElement.innerHTML = messageElement.innerHTML.replace(/\"\"(.+?)\"\"/g, "<blockquote><p>$1</p></blockquote>");
     // Replace # with highlighting
     messageElement.innerHTML = messageElement.innerHTML.replace(/\#(.+?)\#/g, "<mark>$1</mark>");
-    // Replace $$ with an image src
-    
+
     
     if (message.includes("/tableflip"))
         messageElement.innerHTML = "(╯°□°）╯︵ ┻━┻";
@@ -140,8 +137,40 @@ function onMessageEvent(messageElement = null)
         messageElement.innerHTML = "¯\\_(ツ)_/¯";
     else if (message.includes("/unflip"))
         messageElement.innerHTML = "┬─┬ ノ( ゜-゜ノ)";
-    else if (message.includes("/help"))
-        messageElement.innerHTML = "<b><u><i>Google Meet Formatting Help</i></u></b><br><br>Bold: Use **text** to get <b>text</b><br>Italics: Use *text* to get <i>text</i><br>Underline: Use _text_ to get <u>text</u><br>Strikethrough: Use ~~text~~ to get <s>text</s><br>Superscript: Use ^text^ to get <sup>text</sup><br>Spoiler: Use ||text|| to get <p class='spoiler'>text</p><br>Code: Use `text` to get <code>text</code><br>Quote: Use \"\"text\"\" to get <blockquote>text</blockquote><br>Highlighting: Use #text# to get <mark>text</mark>"
+    else if (message.includes("/mute") && message.match(/@([^\s]+)/) && author === "You")
+    {
+        var pmName = message.match(/@([^\s]+)/)[1];
+        pmName = pmName.replace(/\@(.+?)/g, "");
+        console.log(pmName);
+        mutedPeople.push(pmName);
+    }
+    else if (message.includes("/unmute") && message.match(/@([^\s]+)/) && author === "You")
+    {
+        var pmName = message.match(/@([^\s]+)/)[1];
+        pmName = pmName.replace(/\@(.+?)/g, "");
+        mutedPeople = mutedPeople.filter(e => e !== pmName);
+    }
+
+    // Check if message include @
+    if (message.match(/@([^\s]+)/))
+    {
+        var pmName = message.match(/@([^\s]+)/)[1];
+        pmName = pmName.replace(/\@(.+?)/g, "");
+        // Check if your name includes what they selected
+        if (yourName.includes(pmName))
+        {
+            messageElement.innerHTML = "<mark>" + message + "</mark>";
+        }
+        else if (author !== "You")
+        {
+            console.log(yourName + " - " + pmName);
+            messageElement.innerHTML = "<sub><i>Private message sent</i></sub>";
+        }
+    }
+
+
+
+
 
 }
 
