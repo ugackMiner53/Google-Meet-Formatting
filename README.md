@@ -1,3 +1,4 @@
+
 # Google Meet Formatting
 This is an extension which adds some much needed formatting to Google Meet, taking inspiration from [Discord's](https://discord.com) markdown theme.
 
@@ -32,4 +33,11 @@ Highlighting - #Highlighting#
 
 /shrug - ¯\\\_(ツ)\_/¯
 
-/help - Shows the formatting codes
+/mute @person - Remove the messages of @person
+
+/unmute @person - Show all messages of @person
+
+
+## Other:
+@person - Send a private message to @person
+\$\$link\$\$ - Send an image in the chat (200x200px)
