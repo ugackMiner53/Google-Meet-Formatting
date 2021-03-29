@@ -89,6 +89,7 @@ function onMessageEvent(messageElement = null)
         if (author.includes(mutedPerson))
         {
             messageElement.innerHTML = "";
+            message = "";
             return;
         }
     });
