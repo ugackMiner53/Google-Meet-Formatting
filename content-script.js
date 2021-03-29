@@ -90,6 +90,7 @@ function onMessageEvent(messageElement = null)
         if (author.includes(mutedPerson))
         {
             messageElement.innerHTML = "";
+            message = "";
             return;
         }
     });
@@ -152,7 +153,7 @@ function onMessageEvent(messageElement = null)
         mutedPeople = mutedPeople.filter(e => e !== pmName);
     }
 
-    // Check if message include @
+    // Check if message includes @
     if (message.match(/@([^\s]+)/))
     {
         var pmName = message.match(/@([^\s]+)/)[1];
