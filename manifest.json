@@ -1,6 +1,6 @@
 {
   "name": "Google Meet Formatting Development",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "icons": {"128": "icon128x128.png"},
   "description": "Google Meet Formatting allows you to use formatting codes in the chat window",
   "homepage_url": "https://github.com/",
