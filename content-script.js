@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Google Meet Formatting Development
 // @namespace    https://github.com/ugackMiner53/Google-Meet-Formatting/
-// @version      0.0.2
+// @version      0.0.3
 // @description  Adds needed formatting codes to google meet
 // @author       ugackMiner
 // @match        https://meet.google.com/*
@@ -103,10 +103,17 @@ function onMessageEvent(messageElement = null)
     }
 
     // If the message contains a link, skip formatting the message in fear of formatting the link on accident
-    if(new RegExp(/https?:\/\/(www.)?./).test(message)) {
+    if(new RegExp(/(.+?)\:\/\/(.+)/g).test(message)) {
+        if (/\[(.+?)\]\((.+?)\)/gm.exec(message))
+        {
+            messageElement.innerHTML = messageElement.innerHTML.replace(/\<a(.*?)href\=\"(.*?\")\>(.*?)\<\/a\>/g, "$2");
+            messageElement.innerHTML = messageElement.innerHTML.replace(/\[(.+?)\]\((.+?)\)/g, '<a class="DbQRg" target="_blank" href="$2">$1</a>');
+        }
         return;
     }
 
+
+    // /\[(.+?)\]\((.+?)\)/gm works on [hi](hello.com)
 
     // Replace ** with bold
     messageElement.innerHTML = messageElement.innerHTML.replace(/\*\*(.+?)\*\*/g, "<b>$1</b>");
@@ -152,7 +159,7 @@ function onMessageEvent(messageElement = null)
         mutedPeople = mutedPeople.filter(e => e !== pmName);
     }
 
-    // Check if message include @
+    // Check if message includes @
     if (message.match(/@([^\s]+)/))
     {
         var pmName = message.match(/@([^\s]+)/)[1];
