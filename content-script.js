@@ -7,6 +7,7 @@
 // @match        https://meet.google.com/*
 // @grant        none
 // ==/UserScript==
+
 var chatbox;
 var yourName;
 
@@ -99,9 +100,10 @@ function onMessageEvent(messageElement = null)
     if (/\$\$(.+?)\$\$/g.test(messageElement.innerHTML))
     {
         messageElement.innerHTML = messageElement.innerHTML.replace(/\$\$(.*?)\$\$/g, "$1");
-        messageElement.innerHTML = messageElement.innerHTML.replace(/\<a(.*?)\>(.*?)\<\/a\>/g, "<img style=\"max-width: 200px; max-height: 200px\" src=\"$2\"></img>");
+        messageElement.innerHTML = messageElement.innerHTML.replace(/\<a(.*?)href\=\"(.*?\")\>(.*?)\<\/a\>/g, "<img style=\"max-width: 200px; max-height: 200px\" src=\"$2\"></img>");
     }
 
+    
     // If the message contains a link, skip formatting the message in fear of formatting the link on accident
     if(new RegExp(/(.+?)\:\/\/(.+)/g).test(message)) {
         if (/\[(.+?)\]\((.+?)\)/gm.exec(message))
@@ -109,34 +111,42 @@ function onMessageEvent(messageElement = null)
             messageElement.innerHTML = messageElement.innerHTML.replace(/\<a(.*?)href\=\"(.*?\")\>(.*?)\<\/a\>/g, "$2");
             messageElement.innerHTML = messageElement.innerHTML.replace(/\[(.+?)\]\((.+?)\)/g, '<a class="DbQRg" target="_blank" href="$2">$1</a>');
         }
-        return;
+        //return;
     }
 
 
-    // /\[(.+?)\]\((.+?)\)/gm works on [hi](hello.com)
+    //  Old RegEx System:
+    //  /\CHARACTER(.+?)\CHARACTER/g, <HTML-TAG>$1</HTML-TAG>
+    //  It matches a character and places the matched ones in the HTML tags
+    //
+    //  New RegEx System:
+    //  /(?!<a[^>]*?>)(CHARACTER(.+?)CHARACTER)(?![^<]*?<\/a>)/gm, <HTML-TAG>$2</HTML-TAG>
+    //  Matches a character and places the matched ones in the HTML tags, but if there are <a> tags, don't do that to the <a> tags
 
-    // Replace ** with bold
+
+
+    // Replace ** with bold (OLD)
     messageElement.innerHTML = messageElement.innerHTML.replace(/\*\*(.+?)\*\*/g, "<b>$1</b>");
-    // Replace * with italics
+    // Replace * with italics (OLD)
     messageElement.innerHTML = messageElement.innerHTML.replace(/\*(.+?)\*/g, "<i>$1</i>");
-    // Replace _ with underline
-    messageElement.innerHTML = messageElement.innerHTML.replace(/\_(.+?)\_/g, "<u>$1</u>");
-    // Replace ~~ with strikethrough
+    // Replace _ with underline (NEW)
+    messageElement.innerHTML = messageElement.innerHTML.replace(/(?!<a[^>]*?>)(_(.+?)_)(?![^<]*?<\/a>)/gm, "<u>$2</u>");
+    // Replace ~~ with strikethrough (OLD)
     messageElement.innerHTML = messageElement.innerHTML.replace(/\~\~(.+?)\~\~/g, "<s>$1</s>");
-    // Replace ^ with superscript (range of characters)
+    // Replace ^ with superscript (range of characters) (OLd)
     messageElement.innerHTML = messageElement.innerHTML.replace(/\^(.+?)\^/g, "<sup>$1</sup>");
-    // Replace ^ with superscript (single character)
+    // Replace ^ with superscript (single character) (OLD)
     messageElement.innerHTML = messageElement.innerHTML.replace(/\^(\d)/g, "<sup>$1</sup>");
-    // Replace || with custom spoiler spans
+    // Replace || with custom spoiler spans (OLD)
     messageElement.innerHTML = messageElement.innerHTML.replace(/\|\|(.+?)\|\|/g, "<p class='spoiler'>$1</p>");
-    // Replace ``` with code blocks
+    // Replace ``` with code blocks (OLD)
     messageElement.innerHTML = messageElement.innerHTML.replace(/\`\`\`(.+?)\`\`\`/g, "<pre><code>$1</code></pre>");
-    // Replace ` with inline code
+    // Replace ` with inline code (OLD)
     messageElement.innerHTML = messageElement.innerHTML.replace(/\`(.+?)\`/g, "<code>$1</code>");
-    // Replace "" with a block quote
+    // Replace "" with a block quote (OLD)
     messageElement.innerHTML = messageElement.innerHTML.replace(/\"\"(.+?)\"\"/g, "<blockquote><p>$1</p></blockquote>");
-    // Replace # with highlighting
-    messageElement.innerHTML = messageElement.innerHTML.replace(/\#(.+?)\#/g, "<mark>$1</mark>");
+    // Replace # with highlighting (NEW)
+    messageElement.innerHTML = messageElement.innerHTML.replace(/(?!<a[^>]*?>)(#(.+?)#)(?![^<]*?<\/a>)/gm, "<mark>$1</mark>");
 
     
     if (message.includes("/tableflip"))
